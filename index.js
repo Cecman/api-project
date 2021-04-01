@@ -20,13 +20,26 @@ app.get("/api/genres", (req, res) => {
 app.post("/api/genres", (req, res) => {
   if (req.body.genre) {
     const newGenre = {
-        id: genres.length + 1,
-        genre: req.body.genre
-    }
-    genres.push(newGenre.genre)
+      id: genres.length + 1,
+      genre: req.body.genre,
+    };
+    genres.push(newGenre.genre);
+    movies.push(newGenre);
     res.send(newGenre);
-    console.log(genres);
   }
+});
+
+app.put("/api/genres/:genre", (req, res) => {
+  const foundGenre = movies.find((g) => {
+    return g.genre === req.params.genre;
+  });
+
+  if (!foundGenre) {
+   return res.status(404).send("The genre was not found");
+  }
+
+  foundGenre.genre = req.body.genre;
+  res.send(foundGenre);
 });
 
 app.listen(port, () => {
