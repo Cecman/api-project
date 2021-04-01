@@ -35,10 +35,25 @@ app.put("/api/genres/:genre", (req, res) => {
   });
 
   if (!foundGenre) {
-   return res.status(404).send("The genre was not found");
+    return res.status(404).send("The genre was not found");
   }
 
   foundGenre.genre = req.body.genre;
+  res.send(foundGenre);
+});
+
+app.delete("/api/genres/:genre", (req, res) => {
+  const foundGenre = movies.find((g) => {
+    return g.genre === req.params.genre;
+  });
+
+  if (!foundGenre) {
+    return res.status(404).send("No such genre exists");
+  }
+
+  const index = movies.indexOf(foundGenre);
+  movies.splice(index, 1);
+
   res.send(foundGenre);
 });
 
